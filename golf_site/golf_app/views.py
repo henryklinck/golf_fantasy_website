@@ -16,4 +16,4 @@ def blog(request):
         'posts': posts,
     }
 
-    return render(request, 'blog.html', page_content)
+    return render(request, 'golf_app/blog.html', page_content)

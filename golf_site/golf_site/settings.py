@@ -56,7 +56,7 @@ import os
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'golf_site/templates'],
+        'DIRS': [BASE_DIR / 'golf_site/templates'], 
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
