@@ -6,8 +6,8 @@ from .models import BlogPost
 
 def index(request):
 
-    # return HttpResponse("<h1> Text Homepage <h1>")
     return render(request, 'base.html')
+
 
 def blog(request):
 
@@ -17,3 +17,13 @@ def blog(request):
     }
 
     return render(request, 'golf_app/blog.html', page_content)
+
+
+def build_team(request):
+
+    return render(request, 'golf_app/build_team.html')
+
+
+def standings(request):
+
+    return render(request, 'golf_app/standings.html')
