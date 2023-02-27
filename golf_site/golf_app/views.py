@@ -1,6 +1,6 @@
 # from django.http import HttpResponse
 from django.shortcuts import render
-from .models import BlogPost
+from .models import BlogPost, Golfer, Team
 
 # Create your views here.
 
@@ -26,4 +26,9 @@ def build_team(request):
 
 def standings(request):
 
-    return render(request, 'golf_app/standings.html')
+    teams = Team.objects.order_by('-team_points')
+    teams_list = {
+        'teams': teams,
+    }
+
+    return render(request, 'golf_app/standings.html', teams_list)
