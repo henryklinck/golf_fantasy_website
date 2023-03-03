@@ -4,6 +4,14 @@
 
 {% block content %}
 
-<h1> Test Build Team Page</h1>
+<h1>Test</h1>
+
+<form method="POST" action="{% url 'build_team' %}" enctype="multipart/form-data">
+{% csrf_token %}
+{{form}}
+
+<button>Submit</button>
+
+</form>
 
 {% endblock content %}

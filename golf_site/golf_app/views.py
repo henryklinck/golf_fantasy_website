@@ -1,5 +1,6 @@
 # from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from .forms import TeamForm
 from .models import BlogPost, Golfer, Team
 
 # Create your views here.
@@ -20,8 +21,13 @@ def blog(request):
 
 
 def build_team(request):
-
-    return render(request, 'golf_app/build_team.html')
+    if request.POST:
+        form = TeamForm(request.POST)
+        if form.is_valid():
+            form.save()
+        return redirect(standings)
+    #return render(request, 'golf_app/build_team.html', {'form': form})
+    return render(request, 'golf_app/build_team.html', {'form': TeamForm})
 
 
 def standings(request):

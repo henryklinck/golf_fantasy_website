@@ -23,7 +23,7 @@ class Golfer(models.Model):
     point = models.IntegerField()
 
     def __str__(self):
-        return self.first_name + " " + self.last_name + " ($" + self.player_cost + ")"
+        return self.first_name + " " + self.last_name + " ($" + str(self.player_cost) + ")"
 
 
 class Team(models.Model):
