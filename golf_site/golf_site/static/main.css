@@ -56,3 +56,21 @@ ul {
 .blog_post_content {
     color: #000000;
 }
+
+/* Standings */
+
+.team_name {
+  color: #000000;
+  font-size: large;
+}
+
+.team_points {
+  color: #000000;
+  font-size: medium;
+}
+
+.team_roster {
+  color: #000000;
+  display: block;
+  float: left;
+}

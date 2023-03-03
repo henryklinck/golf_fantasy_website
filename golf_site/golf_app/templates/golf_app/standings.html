@@ -23,12 +23,12 @@
         </h3>
         
         <p class="team_points">
-            {{ team.team_points }}
+            Total Points: {{ team.team_points }}
         </p>
 
         <p class="team_roster">
             {% for golfer in team.team_golfers.all %}
-                <li>{{ golfer.last_name }}</li>
+                <li>{{ golfer.last_name }}</li> <br>
             {% endfor %}
         </p>
 
