@@ -1,7 +1,10 @@
 # from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.core.exceptions import ValidationError
 from .forms import TeamForm
-from .models import BlogPost, Golfer, Team
+from django.contrib import messages
+
+from .models import BlogPost, Golfer, Team, SeasonSettings
 
 # Create your views here.
 
@@ -24,9 +27,11 @@ def build_team(request):
     if request.POST:
         form = TeamForm(request.POST)
         if form.is_valid():
-            form.save()
-        return redirect(standings)
-    #return render(request, 'golf_app/build_team.html', {'form': form})
+            if (form.instance.password_used == SeasonSettings.objects.first().user_password):
+                form.save()
+                return redirect(standings)
+            else:
+                messages.info(request, 'Your password is incorrect')
     return render(request, 'golf_app/build_team.html', {'form': TeamForm})
 
 

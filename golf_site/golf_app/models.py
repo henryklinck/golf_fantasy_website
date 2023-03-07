@@ -1,9 +1,10 @@
 from django.db import models
+from datetime import datetime
 
-# Fantasy Settings
-# Team Budget
-# Team size
-# Website Password
+class SeasonSettings(models.Model):
+    team_budget = models.IntegerField()
+    team_size = models.IntegerField()
+    user_password = models.CharField(max_length=30)
 
 # Create your models here.
 class BlogPost(models.Model):
@@ -29,10 +30,12 @@ class Golfer(models.Model):
 class Team(models.Model):
     team_name = models.CharField(max_length=30)
     team_owner = models.CharField(max_length=30, unique=True)
-    team_cost = models.IntegerField()
+    team_cost = models.IntegerField(default=0)
     # team_golfers = feighn key / many to many https://docs.djangoproject.com/en/4.1/topics/db/examples/many_to_one/
     team_golfers = models.ManyToManyField(Golfer)
-    team_points = models.IntegerField()
+    team_points = models.IntegerField(default=0)
+    creation_time = models.DateTimeField(default=datetime.now)
+    password_used = models.CharField(default="test", max_length=30)
 
     def __str__(self):
         return self.team_name
