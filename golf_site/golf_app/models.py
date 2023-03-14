@@ -6,7 +6,7 @@ class SeasonSettings(models.Model):
     team_size = models.IntegerField()
     user_password = models.CharField(max_length=30)
 
-# Create your models here.
+# models here.
 class BlogPost(models.Model):
     title = models.CharField(max_length=150)
     timestamp = models.DateTimeField()
