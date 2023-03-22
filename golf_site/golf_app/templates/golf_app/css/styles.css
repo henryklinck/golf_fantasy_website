@@ -6,8 +6,8 @@
 }
 
 .blog_post_title {
-    color: #000000;
-    font-size: xx-large;
+    color: green;
+    font-size: x-large;
 }
 
 .blog_post_date {
@@ -20,20 +20,22 @@
 
 /* Standings */
 
-.team_name {
-  color: #000000;
-  font-size: large;
+.standing_caption {
+  color: blue;
 }
 
-.team_points {
-  color: #000000;
-  font-size: large;
+.standing_table {
+  border-collapse: collapse;
+  border: none;
 }
 
-.team_roster {
-  color: #000000;
-  display: block;
-  float: left;
+.standing_row {
+  border-top: 1px solid black;
+}
+
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
 }
 
 /* Build Team Page */

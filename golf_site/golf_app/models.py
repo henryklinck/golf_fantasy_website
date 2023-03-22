@@ -5,6 +5,8 @@ class SeasonSettings(models.Model):
     team_budget = models.IntegerField()
     team_size = models.IntegerField()
     user_password = models.CharField(max_length=30)
+    course_par = models.IntegerField(default=0)
+    tourn_pga_link = models.CharField(max_length=100, default="a")
 
 # models here.
 class BlogPost(models.Model):
@@ -18,13 +20,18 @@ class BlogPost(models.Model):
 
 class Golfer(models.Model):
     player_id = models.IntegerField(unique=True)
-    first_name = models.CharField(max_length=15)
-    last_name = models.CharField(max_length=15)
+    name = models.CharField(max_length=15)
     player_cost = models.IntegerField()
+    cut = models.BooleanField(default=False)
     point = models.IntegerField()
 
     def __str__(self):
-        return self.first_name + " " + self.last_name + " ($" + str(self.player_cost) + ")"
+        return self.name + " ($" + str(self.player_cost) + ")"
+
+    @classmethod
+    def create_update(name, player_cost, cut, point):
+        Golfer.objects.create(name= name, player_cost = player_cost, cut = cut ,point = point)
+        
 
 
 class Team(models.Model):

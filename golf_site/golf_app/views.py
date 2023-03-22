@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.core.exceptions import ValidationError
 from .forms import TeamForm
 from django.contrib import messages
+from .update_players import get_curr_player_csv
 
 from .models import BlogPost, Golfer, Team, SeasonSettings
 
@@ -19,6 +20,8 @@ def blog(request):
     page_content = {
         'posts': posts,
     }
+
+    get_curr_player_csv()
 
     return render(request, 'golf_app/blog.html', page_content)
 

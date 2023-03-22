@@ -37,3 +37,14 @@ ul {
   li a:hover {
     background-color: #111;
   }
+
+
+.blog_post_title {
+  color: green;
+  font-size: x-large;
+}
+
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}

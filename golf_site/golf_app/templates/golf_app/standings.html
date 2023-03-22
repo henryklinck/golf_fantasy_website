@@ -2,10 +2,10 @@
 
 {% load static %}
 
-<link href="css/styles.css" rel="stylesheet" type="text/css">
+
 
 <head>
-    
+    <link href="css/styles.css" rel="stylesheet" type="text/css">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,29 +16,27 @@
 {% block teams %}
 
 <div class="team_wrapper">
-    {% for team in teams %}
-    <div class="team">
-        <h3 class="team_name"> 
-            Team: {{ team.team_name }} <br>
-            Owner: {{ team.team_owner }}
-        </h3>
-        
-        <p class="team_points">
-            Total Points: {{ team.team_points }} <br>
-            Team Cost: {{ team.team_cost }} <br>
-            Team Created: {{ team.creation_time }}
-        </p>
-
-        <p class="team_roster">
-            {% for golfer in team.team_golfers.all %}
-                <li>{{ golfer.last_name }}</li> <br>
-            {% endfor %}
-        </p>
-
-        <br>
-
-    </div>
-    {% endfor %}
+    <table class="standing_table" style="width:90%">
+        <caption class="standing_caption">Standings:</caption>
+        {% for team in teams %}
+        <tr>
+            <th>Owner: {{ team.team_owner }} </th>
+            <th>Team: {{ team.team_name }} </th>
+            <th>Total Points: {{ team.team_points }} </th>
+            <th>Team Cost: {{ team.team_cost }} </th>
+            <th>
+                {% for golfer in team.team_golfers.all %}
+                    <li>{{ golfer.name }} 
+                        {% if golfer.cut %}
+                            (CUT)
+                        {% else %}
+                            ({{ golfer.point }})</li> <br>
+                        {% endif %}
+                {% endfor %}
+            </th>
+        </tr>
+        {% endfor %}
+    </table>
 </div>
 
 {% endblock teams %}
