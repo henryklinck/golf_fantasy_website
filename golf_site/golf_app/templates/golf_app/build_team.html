@@ -17,10 +17,6 @@
 
 <h1 class="build_team_title">Build Your Team</h1>
 
-<form method="POST" action="{% url 'build_team' %}" enctype="multipart/form-data">
-{% csrf_token %}
-{{form}}
-
 {% if messages %}
 <ul class="incorrect_password">
     {% for message in messages %}
@@ -29,7 +25,14 @@
 </ul>
 {% endif %}
 
-<button>Submit</button>
+<form method="POST" action="{% url 'build_team' %}" enctype="multipart/form-data">
+{% csrf_token %}
+{{team_form}}
+
+<br>
+<br>
+
+<button>Submit Team</button>
 
 </form>
 

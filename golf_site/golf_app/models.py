@@ -7,6 +7,7 @@ class SeasonSettings(models.Model):
     user_password = models.CharField(max_length=30)
     course_par = models.IntegerField(default=0)
     tourn_pga_link = models.CharField(max_length=100, default="a")
+#    display_standings = models.BooleanField(default=False)
 
 # models here.
 class BlogPost(models.Model):
@@ -19,7 +20,7 @@ class BlogPost(models.Model):
 
 
 class Golfer(models.Model):
-    player_id = models.IntegerField(unique=True)
+    #player_id = models.IntegerField(unique=True)
     name = models.CharField(max_length=15)
     player_cost = models.IntegerField()
     cut = models.BooleanField(default=False)

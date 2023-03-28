@@ -48,3 +48,18 @@ table, th, td {
   border: 1px solid black;
   border-collapse: collapse;
 }
+
+/* Build Team Page */
+#golfers_list {
+  -webkit-column-count: 5;  /* Chrome/Opera, Safari */
+  -moz-column-count: 5; /* Mozilla Firefox */
+  column-count: 5;
+
+  -webkit-column-gap: 25px; /* Chrome/Opera, Safari */
+  -moz-column-gap: 25px; /* Mozilla Firefox */
+  column-gap: 25px;
+
+  -webkit-column-rule: 1px single grey; /* Chrome/Opera, Safari */
+  -moz-column-rule: 1px single grey; /* Mozilla Firefox */
+  column-rule: 1px single grey;
+}
