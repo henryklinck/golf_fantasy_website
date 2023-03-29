@@ -24,47 +24,82 @@ def get_curr_player_csv():
     
     df = pd.DataFrame(accum)
 
-    # str_df = df.to_string()
-
-    #print(str_df)
-
     return df
 
-def updates_players(curr_df):
+def updates_players(curr_df, round):
     ''' 
     Argument Dataframe contains current golfer information at given tournament 
     '''
     #str_df = curr_df.to_string()
 
-    # Find Most Recent Round
+    # Current Round is Represented by Arg: round
 
     for index, row in curr_df.iterrows():
 
-        # Ckeck if player is CUT
-        if (row['POS'] == "CUT"):
-            Golfer.objects.update_or_create(
+        if (round == 'R1'):
+            curr_points = row[round]
+            course_par = SeasonSettings.objects.first().course_par
+
+            if (curr_points == '-'):
+                Golfer.objects.update_or_create(
+                    # Check if value is a number or a dash - Rep dash as 200 points / Player has not Started
+                    # row['PLAYER'] refers to player name
+                    point = row['PLAYER'],
+                )
+    
+            else:
+                Golfer.objects.update_or_create(
+                    # Check if value is a number or a dash - Rep dash as 200 points / Player has not Started
+                    # row['PLAYER'] refers to player name
+                    point = curr_points - course_par,
+                )
+
+        elif (round == 'R2'):
+            curr_points = row[round]
+
+        elif (round == 'R3'):
+            curr_points = row[round]
+
+        elif (round == 'R4'):
+            curr_points = row[round]
+
+        
+
+def initalize_players(curr_df):
+    ''' 
+    Argument Dataframe contains current golfer information at given tournament 
+    '''
+    str_df = curr_df.to_string()
+
+    print(str_df)
+
+    # Find Most Recent Round
+
+    for index, row in curr_df.iterrows():
+        Golfer.objects.update_or_create(
                 # row['PLAYER'] refers to player name
                 name = row['PLAYER'],
-                player_cost = 110,
-                cut = True,
+                player_cost = 100
             )
-        else:
-            Golfer.objects.update_or_create(
-                name = row['PLAYER'],
-                player_cost = 100,
-            )
+    
+    # Update Player Values from Tourn Info Csv
+    # tourn_csv_file = csv.reader(open('./tourn_info.csv', "r"), delimiter=",")
 
-    #print(str_df)
+    #for row in tourn_csv_file:
+    #if current rows 2nd value is equal to input, print that row
+        #if number == row[1]:
+    #    print (row)
 
-    #curr_csv = curr_df.to_csv()
 
-    #print(type(curr_csv))
+def check_cut(name):
+    team = Team.objects.filter(team_name = name)
+    if (team.cut):
+        return
+    else:
+        num_non_cut_golfers = 0
+        for golfer in team:
+            if not (golfer.cut):
+                num_non_cut_golfers += 1
 
-    #recent_round_index = 0
-
-    #with open(curr_csv, 'r') as csvfile:
-    #    reader = csv.reader(csvfile)
-    #    for row in reader:
-    #        #print(row[2])
-
-#def update_players(Dataframe curr_df):
+        if (num_non_cut_golfers < 4):
+            team.cut = True

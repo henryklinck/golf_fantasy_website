@@ -7,6 +7,7 @@ class SeasonSettings(models.Model):
     course_par = models.IntegerField(default=0)
     tourn_pga_link = models.CharField(max_length=100, default="a")
     STAGES = {
+        ('init_tourn', 'Initialize Players'),
         ('pre', 'Pre Tournament'),
         ('r_1', 'Round 1'),
         ('r_2', 'Round 2'),

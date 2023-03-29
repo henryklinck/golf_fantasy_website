@@ -6,6 +6,7 @@ from .forms import TeamForm, ConfmForm
 from django.contrib import messages
 from .update_players import get_curr_player_csv, updates_players
 from .models import Golfer, Team, SeasonSettings
+from .update_players import get_curr_player_csv, initalize_players
 #from django.views.decorators.csrf import csrf_exempt
 
 from .models import BlogPost, Golfer, Team, SeasonSettings
@@ -23,10 +24,6 @@ def blog(request):
     page_content = {
         'posts': posts,
     }
-
-    player_df = get_curr_player_csv()
-
-    updates_players(player_df)
 
     return render(request, 'golf_app/blog.html', page_content)
 
@@ -82,27 +79,47 @@ def confm_team(request):
 
 
 def standings(request):
-
-    if (SeasonSettings.objects.first().curr_stage != 'pre'):
+    current_stage = SeasonSettings.objects.first().curr_stage
+    if (current_stage != 'pre' and current_stage != 'init_tourn'):
         for team in Team.objects.all():
             team_pts_so_far = 0
             for golfer in team.team_golfers.all():
                 team_pts_so_far += golfer.point
             team.team_points = team_pts_so_far
 
-        teams = Team.objects.order_by('-team_points')
+        teams = Team.objects.filter(cut=False).order_by('-team_points')
+        cut_teams = Team.objects.filter(cut=True).order_by('-team_points')
         teams_list = {
             'teams': teams,
+            'cut_teams' : cut_teams
         }
+
         current_stage = SeasonSettings.objects.first().curr_stage
+
+        points_df = get_curr_player_csv()
+
         if (current_stage == 'r_1'):
             teams_list['r1'] = True
+            updates_players(points_df, 'R1')
+
         elif (current_stage == 'r_2'):
             teams_list['r2'] = True
+            updates_players(points_df, 'R2')
+
         elif (current_stage == 'r_3'):
             teams_list['r3'] = True
+            updates_players(points_df, 'R3')
+
         elif (current_stage == 'r_4'):
             teams_list['r4'] = True
+            updates_players(points_df, 'R4')
+
         return render(request, 'golf_app/standings.html', teams_list)
+    elif (current_stage == 'init_tourn' and Golfer.objects.count() < 10):
+        print("TEST")
+
+        curr_df = get_curr_player_csv()
+        initalize_players(curr_df )
+        return render(request, 'golf_app/standings.html', {})
     else:
         return render(request, 'golf_app/standings.html', {})

@@ -23,6 +23,8 @@
             <th>Owner: {{ team.team_owner }} </th>
             <th>Team: {{ team.team_name }} </th>
             <th>Total Points: {{ team.team_points }} </th>
+
+
             {% if r1 %}
                 <th>Round 1 Points: {{ team.r_1_points }} </th>
             {% endif %}
@@ -41,6 +43,29 @@
                 <th>Round 3 Points: {{ team.r_3_points }} </th>
                 <th>Round 4 Points: {{ team.r_2_points }} </th>
             {% endif %}
+            <th>
+                {% for golfer in team.team_golfers.all %}
+                    <li>{{ golfer.name }} 
+                        {% if golfer.cut %} 
+                            (CUT) </li> <br>
+                        {% else %}
+                            ({{ golfer.point }})</li> <br>
+                        {% endif %}
+                {% endfor %}
+            </th>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+<div class="team_wrapper">
+    <table class="standing_table" style="width:90%">
+        <caption class="standing_caption">Standings (Cut Teams):</caption>
+        {% for team in cut_teams %}
+        <tr>
+            <th>Owner: {{ team.team_owner }} </th>
+            <th>Team: {{ team.team_name }} </th>
+            <th>Total Points: CUT </th>
             <th>
                 {% for golfer in team.team_golfers.all %}
                     <li>{{ golfer.name }} 
