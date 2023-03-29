@@ -23,7 +23,24 @@
             <th>Owner: {{ team.team_owner }} </th>
             <th>Team: {{ team.team_name }} </th>
             <th>Total Points: {{ team.team_points }} </th>
-            <th>Team Cost: {{ team.team_cost }} </th>
+            {% if r1 %}
+                <th>Round 1 Points: {{ team.r_1_points }} </th>
+            {% endif %}
+            {% if r2 %}
+                <th>Round 1 Points: {{ team.r_1_points }} </th>
+                <th>Round 2 Points: {{ team.r_2_points }} </th>
+            {% endif %}
+            {% if r3 %}
+                <th>Round 1 Points: {{ team.r_1_points }} </th>
+                <th>Round 2 Points: {{ team.r_2_points }} </th>
+                <th>Round 3 Points: {{ team.r_3_points }} </th>
+            {% endif %}
+            {% if r4 %}
+                <th>Round 1 Points: {{ team.r_1_points }} </th>
+                <th>Round 2 Points: {{ team.r_2_points }} </th>
+                <th>Round 3 Points: {{ team.r_3_points }} </th>
+                <th>Round 4 Points: {{ team.r_2_points }} </th>
+            {% endif %}
             <th>
                 {% for golfer in team.team_golfers.all %}
                     <li>{{ golfer.name }} 

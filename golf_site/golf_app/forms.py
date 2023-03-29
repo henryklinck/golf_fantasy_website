@@ -11,7 +11,7 @@ class TeamForm(ModelForm):
     team_golfers = forms.ModelMultipleChoiceField(
         queryset=Golfer.objects.all().order_by('name'),
         widget=forms.CheckboxSelectMultiple(attrs={'id': 'golfers_list'}),
-        label=mark_safe('<br /><br /> Select Your Players Below. Minimum 4 - Maximum - ' + str(SeasonSettings.objects.first().team_size) + '.')
+        label=mark_safe('<br /><br /> Select Your Players Below. Minimum 4 - Maximum - 7.')
     )
     #team_points = forms.IntegerField()
     class Meta:

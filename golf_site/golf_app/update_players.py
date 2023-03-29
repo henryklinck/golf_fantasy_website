@@ -47,13 +47,11 @@ def updates_players(curr_df):
                 name = row['PLAYER'],
                 player_cost = 110,
                 cut = True,
-                point = row['R1']
             )
         else:
             Golfer.objects.update_or_create(
                 name = row['PLAYER'],
                 player_cost = 100,
-                point = row['R1']
             )
 
     #print(str_df)

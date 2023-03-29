@@ -1,5 +1,4 @@
 from django.db import models
-from django.utils import timezone
 
 class SeasonSettings(models.Model):
     team_budget = models.IntegerField()
@@ -7,7 +6,18 @@ class SeasonSettings(models.Model):
     user_password = models.CharField(max_length=30)
     course_par = models.IntegerField(default=0)
     tourn_pga_link = models.CharField(max_length=100, default="a")
-#    display_standings = models.BooleanField(default=False)
+    STAGES = {
+        ('pre', 'Pre Tournament'),
+        ('r_1', 'Round 1'),
+        ('r_2', 'Round 2'),
+        ('r_3', 'Round 3'),
+        ('r_4', 'Round 4')
+    }
+    curr_stage = models.CharField(
+        max_length=30,
+        choices=STAGES,
+        default='pre',
+    )
 
 # models here.
 class BlogPost(models.Model):
@@ -24,7 +34,11 @@ class Golfer(models.Model):
     name = models.CharField(max_length=15)
     player_cost = models.IntegerField()
     cut = models.BooleanField(default=False)
-    point = models.IntegerField()
+    r1_points = models.IntegerField(default=0)
+    r2_points = models.IntegerField(default=0)
+    r3_points = models.IntegerField(default=0)
+    r4_points = models.IntegerField(default=0)
+    point = models.IntegerField(default=0)
 
     def __str__(self):
         return self.name + " ($" + str(self.player_cost) + ")"
@@ -44,6 +58,11 @@ class Team(models.Model):
     team_points = models.IntegerField(default=0)
     #creation_time = models.DateTimeField(timezone.now())
     password_used = models.CharField(default="test", max_length=30)
+    r_1_points = models.IntegerField(default=0)
+    r_2_points = models.IntegerField(default=0)
+    r_3_points = models.IntegerField(default=0)
+    r_4_points = models.IntegerField(default=0)
+    cut = models.BooleanField(default=False)
 
     def __str__(self):
         return self.team_name

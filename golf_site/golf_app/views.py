@@ -46,6 +46,8 @@ def build_team(request):
                 for golfer in curr_team.team_golfers.all():
                     curr_spent += golfer.player_cost
                     team_players.add(golfer.name)
+                
+                
 
                 # Check if team cost > max budget:
 
@@ -58,9 +60,10 @@ def build_team(request):
                 })
             else:
                 messages.info(request, 'Your password is incorrect')
-        
+
+    max_budget = str(SeasonSettings.objects.first().team_budget)    
     return render(request, 'golf_app/build_team.html', {'team_form': TeamForm,
-                                                        'max_budget': SeasonSettings.objects.first().team_budget,})
+                                                        'max_budget': max_budget,})
 
 
 def confm_team(request):
@@ -80,15 +83,26 @@ def confm_team(request):
 
 def standings(request):
 
-    for team in Team.objects.all():
-        team_pts_so_far = 0
-        for golfer in team.team_golfers.all():
-            team_pts_so_far += golfer.point
-        team.team_points = team_pts_so_far
+    if (SeasonSettings.objects.first().curr_stage != 'pre'):
+        for team in Team.objects.all():
+            team_pts_so_far = 0
+            for golfer in team.team_golfers.all():
+                team_pts_so_far += golfer.point
+            team.team_points = team_pts_so_far
 
-    teams = Team.objects.order_by('-team_points')
-    teams_list = {
-        'teams': teams,
-    }
-
-    return render(request, 'golf_app/standings.html', teams_list)
+        teams = Team.objects.order_by('-team_points')
+        teams_list = {
+            'teams': teams,
+        }
+        current_stage = SeasonSettings.objects.first().curr_stage
+        if (current_stage == 'r_1'):
+            teams_list['r1'] = True
+        elif (current_stage == 'r_2'):
+            teams_list['r2'] = True
+        elif (current_stage == 'r_3'):
+            teams_list['r3'] = True
+        elif (current_stage == 'r_4'):
+            teams_list['r4'] = True
+        return render(request, 'golf_app/standings.html', teams_list)
+    else:
+        return render(request, 'golf_app/standings.html', {})
