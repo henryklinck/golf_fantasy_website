@@ -35,7 +35,7 @@ def build_team(request):
         if team_form.is_valid():
             if (team_form.instance.password_used == SeasonSettings.objects.first().user_password):
                 team_form.save()
-                curr_team = Team.objects.get(team_owner=team_form.instance.team_owner)
+                curr_team = Team.objects.get(team_name=team_form.instance.team_name)
                 #curr_team.creation_time(timezone.now())
 
                 curr_spent = 0
@@ -80,46 +80,62 @@ def confm_team(request):
 
 def standings(request):
     current_stage = SeasonSettings.objects.first().curr_stage
+    print("TEST")
     if (current_stage != 'pre' and current_stage != 'init_tourn'):
-        for team in Team.objects.all():
-            team_pts_so_far = 0
-            for golfer in team.team_golfers.all():
-                team_pts_so_far += golfer.point
-            team.team_points = team_pts_so_far
-
-        teams = Team.objects.filter(cut=False).order_by('-team_points')
-        cut_teams = Team.objects.filter(cut=True).order_by('-team_points')
-        teams_list = {
-            'teams': teams,
-            'cut_teams' : cut_teams
-        }
 
         current_stage = SeasonSettings.objects.first().curr_stage
 
         points_df = get_curr_player_csv()
 
         if (current_stage == 'r_1'):
-            teams_list['r1'] = True
+            print("TEST!!")
+            round = {}
+            round['r1'] = True
             updates_players(points_df, 'R1')
 
         elif (current_stage == 'r_2'):
-            teams_list['r2'] = True
+            round = {}
+            round['r2'] = True
             updates_players(points_df, 'R2')
 
         elif (current_stage == 'r_3'):
-            teams_list['r3'] = True
+            round = {}
+            round['r3'] = True
             updates_players(points_df, 'R3')
 
         elif (current_stage == 'r_4'):
-            teams_list['r4'] = True
+            round = {}
+            round['r4'] = True
             updates_players(points_df, 'R4')
 
+        print("TEST!")
+        for team in Team.objects.all():
+            # Get Team's Current Points
+            # Check if Team is Cut
+            team_pts_so_far = 0
+            for golfer in team.team_golfers.all():
+                team_pts_so_far += golfer.point
+            team.team_points = team_pts_so_far
+            
+
+            team.save()
+            print(str(team.team_points) + " hi")
+
+        teams = Team.objects.filter(cut=False).order_by('team_points')
+        cut_teams = Team.objects.filter(cut=True).order_by('team_points')
+        teams_list = {
+            'teams': teams,
+            'cut_teams' : cut_teams
+        }
+
         return render(request, 'golf_app/standings.html', teams_list)
+
     elif (current_stage == 'init_tourn' and Golfer.objects.count() < 10):
         print("TEST")
 
         curr_df = get_curr_player_csv()
         initalize_players(curr_df )
         return render(request, 'golf_app/standings.html', {})
+
     else:
         return render(request, 'golf_app/standings.html', {})

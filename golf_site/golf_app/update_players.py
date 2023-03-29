@@ -34,35 +34,87 @@ def updates_players(curr_df, round):
 
     # Current Round is Represented by Arg: round
 
+    course_par = SeasonSettings.objects.first().course_par
+
     for index, row in curr_df.iterrows():
+        if not (row['POS'] == 'CUT' or row['POS'] == 'WD'):
+            # row['PLAYER'] refers to player name
+            # if Position not Cut
 
-        if (round == 'R1'):
-            curr_points = row[round]
-            course_par = SeasonSettings.objects.first().course_par
+            if (round == 'R1'):
+                print("Print round = R1")
+                curr_points = row[round]
+                
 
-            if (curr_points == '-'):
-                Golfer.objects.update_or_create(
-                    # Check if value is a number or a dash - Rep dash as 200 points / Player has not Started
-                    # row['PLAYER'] refers to player name
-                    point = row['PLAYER'],
-                )
-    
-            else:
-                Golfer.objects.update_or_create(
-                    # Check if value is a number or a dash - Rep dash as 200 points / Player has not Started
-                    # row['PLAYER'] refers to player name
-                    point = curr_points - course_par,
-                )
+                if (curr_points == '-'):
+                    print("curr_points == -")
+                    Golfer.objects.filter(name = row['PLAYER']).update(
+                        started_round = False
+                    )
+        
+                else:
+                    print(row['PLAYER'])
+                    gname = row['PLAYER']
 
-        elif (round == 'R2'):
-            curr_points = row[round]
+                    Golfer.objects.filter(name = row['PLAYER']).update(
+                        started_round = True,
+                        r1_points = int(curr_points) - course_par,
+                        point = int(curr_points) - course_par
+                        )
+                    #print(Golfer.objects.filter(name=gname).r1_points)
 
-        elif (round == 'R3'):
-            curr_points = row[round]
+            elif (round == 'R2'):
+                curr_points = row[round]
+                if (curr_points == '-'):
+                    Golfer.objects.filter(name = row['PLAYER']).update(
+                        started_round = False
+                    )
+        
+                else:
+                    Golfer.objects.filter(name = row['PLAYER']).update(
+                        started_round = True,
+                        r2_points = int(curr_points) - course_par,
+                        point = (int(curr_points) - course_par) + Golfer.objects.filter(name=row['PLAYER']).first().r1_points
+                    )
 
-        elif (round == 'R4'):
-            curr_points = row[round]
 
+            elif (round == 'R3'):
+                curr_points = row[round]
+                if (curr_points == '-'):
+                    Golfer.objects.filter(name = row['PLAYER']).update(
+                        started_round = False
+                    )
+        
+                else:
+                    Golfer.objects.filter(name = row['PLAYER']).update(
+                        started_round = True,
+                        r3_points = int(curr_points) - course_par,
+                        point = (int(curr_points) - course_par) + Golfer.objects.filter(name=row['PLAYER']).first().r1_points +
+                        Golfer.objects.filter(name=row['PLAYER']).first().r2_points
+                    )
+
+            elif (round == 'R4'):
+                curr_points = row[round]
+                if (curr_points == '-'):
+                    Golfer.objects.filter(name = row['PLAYER']).update(
+                        started_round = False
+                    )
+        
+                else:
+                    Golfer.objects.filter(name = row['PLAYER']).update(
+                        started_round = True,
+                        r4_points = int(curr_points) - course_par,
+                        point = (int(curr_points)- course_par) + Golfer.objects.filter(name=row['PLAYER']).first().r1_points +
+                        Golfer.objects.filter(name=row['PLAYER']).first().r2_points +
+                        Golfer.objects.filter(name=row['PLAYER']).first().r3_points
+                    )
+        
+        else:
+            Golfer.objects.filter(name=row['PLAYER']).update(
+                cut = True
+            )
+
+    return
         
 
 def initalize_players(curr_df):
@@ -79,7 +131,7 @@ def initalize_players(curr_df):
         Golfer.objects.update_or_create(
                 # row['PLAYER'] refers to player name
                 name = row['PLAYER'],
-                player_cost = 100
+                player_cost = 0
             )
     
     # Update Player Values from Tourn Info Csv
