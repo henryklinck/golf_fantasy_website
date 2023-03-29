@@ -1,10 +1,11 @@
 # from django.http import HttpResponse
+#from django.utils import timezone
 from django.shortcuts import render, redirect
 from django.core.exceptions import ValidationError
-from .forms import TeamForm
+from .forms import TeamForm, ConfmForm
 from django.contrib import messages
 from .update_players import get_curr_player_csv, updates_players
-from .models import Golfer, Team
+from .models import Golfer, Team, SeasonSettings
 #from django.views.decorators.csrf import csrf_exempt
 
 from .models import BlogPost, Golfer, Team, SeasonSettings
@@ -33,14 +34,48 @@ def blog(request):
 def build_team(request):
     if request.POST:
         team_form = TeamForm(request.POST)
+
         if team_form.is_valid():
             if (team_form.instance.password_used == SeasonSettings.objects.first().user_password):
                 team_form.save()
-                return redirect(standings)
+                curr_team = Team.objects.get(team_owner=team_form.instance.team_owner)
+                #curr_team.creation_time(timezone.now())
+
+                curr_spent = 0
+                team_players = set()
+                for golfer in curr_team.team_golfers.all():
+                    curr_spent += golfer.player_cost
+                    team_players.add(golfer.name)
+
+                # Check if team cost > max budget:
+
+                return render(request, 'golf_app/confm_team.html', 
+                {'confm_form': ConfmForm, 
+                'confm_name': team_form.instance.team_name,
+                'confm_owner': team_form.instance.team_owner,
+                'confm_team_cost': str(curr_spent),
+                'confm_golfers': team_players
+                })
             else:
                 messages.info(request, 'Your password is incorrect')
         
-    return render(request, 'golf_app/build_team.html', {'team_form': TeamForm})
+    return render(request, 'golf_app/build_team.html', {'team_form': TeamForm,
+                                                        'max_budget': SeasonSettings.objects.first().team_budget,})
+
+
+def confm_team(request):
+    if request.POST:
+        confirm_form = ConfmForm(request.POST)
+
+        if confirm_form.is_valid():
+            del_team = confirm_form.result()
+            if(len(del_team) > 1):
+                for team in Team.objects.all():
+                    if team.team_name == del_team:
+                        Team.objects.filter(team_name=del_team).delete()
+                        return render(request, 'golf_app/build_team.html', {'messages': str('Your Team Has Been Deleted Successfully')})
+    return render(request, 'golf_app/build_team.html')
+
 
 
 def standings(request):

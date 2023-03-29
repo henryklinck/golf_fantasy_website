@@ -1,5 +1,3 @@
-<!-- https://www.youtube.com/watch?v=6aQoW0TRXBk -->
-
 {% extends "base.html" %}
 
 {% load static %}
@@ -17,22 +15,31 @@
 
 <h1 class="build_team_title">Build Your Team</h1>
 
+<h3>Team Budget: ${{max_budget}}</h3>
+
 {% if messages %}
-<ul class="incorrect_password">
-    {% for message in messages %}
-    <li class="invalid_message">{{ message }}</li>
-    {% endfor %}
-</ul>
+<div class="messages_container">
+    <ul class="message_list">
+        {% for message in messages %}
+        <li class="invalid_message">{{ message }}</li>
+        {% endfor %}
+    </ul>
+</div>
+
 {% endif %}
 
 <form method="POST" action="{% url 'build_team' %}" enctype="multipart/form-data">
 {% csrf_token %}
-{{team_form}}
 
-<br>
 <br>
 
 <button>Submit Team</button>
+
+<br>
+
+{{team_form}}
+
+<br>
 
 </form>
 

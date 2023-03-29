@@ -1,0 +1,49 @@
+<!-- https://www.youtube.com/watch?v=6aQoW0TRXBk -->
+
+{% extends "base.html" %}
+
+{% load static %}
+
+<link href="css/styles.css" rel="stylesheet" type="text/css">
+
+<head>
+    
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+
+{% block content %}
+
+<h1 class="build_team_title">Congratulations! Your Team has Been Successfully Created:</h1>
+
+<p>When The Tournament Starts, Visit The "Standings" Page to See Your Performance</p>
+
+<div class="input_info">
+    <h4>Team Name: {{ confm_name }}</h4>
+    <h4>Team Owner: {{ confm_owner }}</h4>
+    <h4>Team Cost: {{ confm_team_cost }} </h4>
+    <h4>Team Golfers: </h4>
+    <p>{% for golfer in confm_golfers %}
+        -  {{ golfer }} <br>
+    {% endfor %}
+    </p>    
+</div>
+
+<form method="POST" action="{% url 'confm_team' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    <br>
+    
+    {{confm_form}}
+    
+    <br>
+    
+    <button>Remove Team</button>
+    
+    <br>
+    
+    </form>
+
+{% endblock content %}

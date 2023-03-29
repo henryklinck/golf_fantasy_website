@@ -27,8 +27,8 @@
             <th>
                 {% for golfer in team.team_golfers.all %}
                     <li>{{ golfer.name }} 
-                        {% if golfer.cut %}
-                            (CUT)
+                        {% if golfer.cut %} 
+                            (CUT) </li> <br>
                         {% else %}
                             ({{ golfer.point }})</li> <br>
                         {% endif %}

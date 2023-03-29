@@ -16,4 +16,10 @@ class TeamForm(ModelForm):
     #team_points = forms.IntegerField()
     class Meta:
         model = Team
-        fields = ['team_name','team_owner', 'team_golfers', 'password_used']
+        fields = ['team_name','team_owner', 'password_used', 'team_golfers']
+
+class ConfmForm(forms.Form):
+    delete_team = forms.CharField(max_length=30, label=mark_safe('<br /> To Delete Team, Type Team Name:')) 
+
+    def result(self):
+        return self.cleaned_data['delete_team']

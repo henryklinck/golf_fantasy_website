@@ -55,11 +55,25 @@ table, th, td {
   -moz-column-count: 5; /* Mozilla Firefox */
   column-count: 5;
 
-  -webkit-column-gap: 25px; /* Chrome/Opera, Safari */
-  -moz-column-gap: 25px; /* Mozilla Firefox */
-  column-gap: 25px;
+  -webkit-column-gap: 1%; /* Chrome/Opera, Safari */
+  -moz-column-gap: 1%; /* Mozilla Firefox */
+  column-gap: 1%;
 
   -webkit-column-rule: 1px single grey; /* Chrome/Opera, Safari */
   -moz-column-rule: 1px single grey; /* Mozilla Firefox */
   column-rule: 1px single grey;
+}
+
+div.messages_container {
+  text-align: center;
+  font-size: large;
+}
+
+ul.message_list {
+  display: inline-block;
+  text-align: left;
+}
+
+li.invalid_message {
+  text-align: center;
 }

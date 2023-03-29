@@ -1,5 +1,5 @@
 from django.db import models
-from datetime import datetime
+from django.utils import timezone
 
 class SeasonSettings(models.Model):
     team_budget = models.IntegerField()
@@ -36,13 +36,13 @@ class Golfer(models.Model):
 
 
 class Team(models.Model):
-    team_name = models.CharField(max_length=30)
-    team_owner = models.CharField(max_length=30, unique=True)
+    team_name = models.CharField(max_length=30, unique=True)
+    team_owner = models.CharField(max_length=30)
     team_cost = models.IntegerField(default=0)
     # team_golfers = feighn key / many to many https://docs.djangoproject.com/en/4.1/topics/db/examples/many_to_one/
     team_golfers = models.ManyToManyField(Golfer)
     team_points = models.IntegerField(default=0)
-    creation_time = models.DateTimeField(default=datetime.now)
+    #creation_time = models.DateTimeField(timezone.now())
     password_used = models.CharField(default="test", max_length=30)
 
     def __str__(self):
