@@ -49,7 +49,18 @@
                         {% if golfer.cut %} 
                             (CUT) </li> <br>
                         {% else %}
-                            ({{ golfer.point }})</li> <br>
+                            {% if r1 %}
+                                {{ golfer.r1_points }} </li> <br>
+                            {% endif %}
+                            {% if r2 %}
+                                {{ golfer.r2_points }} </li> <br>
+                            {% endif %}
+                            {% if r3 %}
+                                {{ golfer.r3_points }} </li> <br>
+                            {% endif %}
+                            {% if r4 %}
+                                {{ golfer.r4_points }} </li> <br>
+                            {% endif %}
                         {% endif %}
                 {% endfor %}
             </th>
@@ -60,19 +71,30 @@
 
 <div class="team_wrapper">
     <table class="standing_table" style="width:90%">
-        <caption class="standing_caption">Standings (Cut Teams):</caption>
-        {% for team in cut_teams %}
+        <caption class="standing_caption">Standings (CUT):</caption>
+        {% for team in teams %}
         <tr>
-            <th>Owner: {{ team.team_owner }} </th>
             <th>Team: {{ team.team_name }} </th>
-            <th>Total Points: CUT </th>
+            <th>Owner: {{ team.team_owner }} </th>
+            <th>Total Points: {{ team.team_points }} </th>
             <th>
                 {% for golfer in team.team_golfers.all %}
                     <li>{{ golfer.name }} 
                         {% if golfer.cut %} 
                             (CUT) </li> <br>
                         {% else %}
-                            ({{ golfer.point }})</li> <br>
+                            {% if r1 %}
+                                {{ golfer.r1_points }} </li> <br>
+                            {% endif %}
+                            {% if r2 %}
+                                {{ golfer.r2_points }} </li> <br>
+                            {% endif %}
+                            {% if r3 %}
+                                {{ golfer.r3_points }} </li> <br>
+                            {% endif %}
+                            {% if r4 %}
+                                {{ golfer.r4_points }} </li> <br>
+                            {% endif %}
                         {% endif %}
                 {% endfor %}
             </th>
@@ -80,6 +102,7 @@
         {% endfor %}
     </table>
 </div>
+
 
 {% endblock teams %}
 

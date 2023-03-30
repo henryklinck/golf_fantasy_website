@@ -33,27 +33,27 @@ def updates_players(curr_df, round):
     #str_df = curr_df.to_string()
 
     # Current Round is Represented by Arg: round
+    print(curr_df.to_string())
 
     course_par = SeasonSettings.objects.first().course_par
 
     for index, row in curr_df.iterrows():
-        if not (row['POS'] == 'CUT' or row['POS'] == 'WD'):
+        
+        if not (row['POS'] == 'CUT' or row['POS'] == 'WD' or row['POS'] == 'DQ'):
+
             # row['PLAYER'] refers to player name
             # if Position not Cut
 
             if (round == 'R1'):
-                print("Print round = R1")
                 curr_points = row[round]
                 
 
                 if (curr_points == '-'):
-                    print("curr_points == -")
                     Golfer.objects.filter(name = row['PLAYER']).update(
                         started_round = False
                     )
         
                 else:
-                    print(row['PLAYER'])
                     gname = row['PLAYER']
 
                     Golfer.objects.filter(name = row['PLAYER']).update(
@@ -143,15 +143,19 @@ def initalize_players(curr_df):
     #    print (row)
 
 
+#def get_top_4_golfers(team_name, )
+
+
 def check_cut(name):
-    team = Team.objects.filter(team_name = name)
+    team = Team.objects.filter(team_name = name).first()
     if (team.cut):
         return
     else:
         num_non_cut_golfers = 0
-        for golfer in team:
+        for golfer in team.team_golfers.all():
             if not (golfer.cut):
                 num_non_cut_golfers += 1
 
         if (num_non_cut_golfers < 4):
             team.cut = True
+            team.save()

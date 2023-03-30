@@ -29,15 +29,18 @@
 {% endif %}
 
 <form method="POST" action="{% url 'build_team' %}" enctype="multipart/form-data">
-{% csrf_token %}
+    {% csrf_token %}
+    <button type="submit" name="btnform1">Submit Team</button>
+    <br>
+    <br>
+    <button type="submit" name="btnform2">Check Cost</button>
+    <br>
+    {% csrf_token %}
+    {{team_form}}
+    </form>
+    <br>
 
 <br>
-
-<button>Submit Team</button>
-
-<br>
-
-{{team_form}}
 
 <br>
 

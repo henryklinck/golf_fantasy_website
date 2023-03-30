@@ -32,7 +32,7 @@ class BlogPost(models.Model):
 
 class Golfer(models.Model):
     #player_id = models.IntegerField(unique=True)
-    name = models.CharField(max_length=15)
+    name = models.CharField(max_length=45)
     player_cost = models.IntegerField(default=0)
     started_round = models.BooleanField(default=False)
     cut = models.BooleanField(default=False)
@@ -43,7 +43,7 @@ class Golfer(models.Model):
     point = models.IntegerField(default=0)
 
     def __str__(self):
-        return self.name
+        return self.name + " - " + str(self.player_cost)
 
     @classmethod
     def create_update(name, player_cost, cut, point):
@@ -68,5 +68,6 @@ class Team(models.Model):
 
     def __str__(self):
         return self.team_name
+
 
 

@@ -32,18 +32,14 @@
 </div>
 
 <form method="POST" action="{% url 'confm_team' %}" enctype="multipart/form-data">
+    <br>
+    <button>Confirm</button>
+    <br>
     {% csrf_token %}
-    
-    <br>
-    
+    <p hidden>
     {{confm_form}}
-    
-    <br>
-    
-    <button>Remove Team</button>
-    
-    <br>
-    
+    </p>
+
     </form>
 
 {% endblock content %}
