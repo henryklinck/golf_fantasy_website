@@ -87,18 +87,19 @@ def get_team_score(team_name, df):
         for golfer in team_golfers:
             name = golfer.name
             for index, row in df.iterrows():
-                if (name == row['PLAYER'] and row['R2'] != '-' and not golfer.cut):
+                if (name == row['PLAYER']):
                     # Add R1 Values
-                    r1_score = int(row['R1']) - par
-                    round_1_scores.append(r1_score)
+                    if ((row['R1']) != '-'):
+                        r1_score = int(row['R1']) - par
+                        round_1_scores.append(r1_score)
+
+                if (name == row['PLAYER'] and row['R2'] != '-' and not golfer.cut):
 
                     # Next 4 Lines Adds R2 Values
                     tot_score = int(row['TOT']) - r1_score
                     golfer_scores.append(tot_score)
                 elif (name == row['PLAYER'] and row['R2'] == '-' and not golfer.cut):
-                    # Player not out yet
-                    r1_score = int(row['R1']) - par
-                    round_1_scores.append(r1_score)
+
                     golfer_scores.append(0)
 
         # round_1_scores contains top 4 from round 2
@@ -123,25 +124,24 @@ def get_team_score(team_name, df):
         for golfer in team_golfers:
             name = golfer.name
             for index, row in df.iterrows():
-                if (name == row['PLAYER'] and row['R3'] != '-' and not golfer.cut):
+                if (name == row['PLAYER']):
                     # Add R1 Values
-                    r1_score = int(row['R1']) - par
-                    round_1_scores.append(r1_score)
+                    if ((row['R1']) != '-'):
+                        r1_score = int(row['R1']) - par
+                        round_1_scores.append(r1_score)
 
                     # Add R2 Values
-                    r2_score = int(row['R2']) - par
-                    round_2_scores.append(r2_score)
+                    if ((row['R2']) != '-'):
+                        r2_score = int(row['R2']) - par
+                        round_2_scores.append(r2_score)
+
+                elif (name == row['PLAYER'] and row['R3'] != '-' and not golfer.cut):
 
                     # Next 4 Lines Adds Earlier Values
                     tot_score = int(row['TOT']) - r1_score - r2_score
                     golfer_scores.append(tot_score)
+
                 elif (name == row['PLAYER'] and row['R3'] == '-' and not golfer.cut):
-                    # Add R1 Values
-                    r1_score = int(row['R1']) - par
-                    round_1_scores.append(r1_score)
-                    # Add R2 Values
-                    r2_score = int(row['R2']) - par
-                    round_2_scores.append(r2_score)
 
                     golfer_scores.append(0)
                     
@@ -172,34 +172,29 @@ def get_team_score(team_name, df):
         for golfer in team_golfers:
             name = golfer.name
             for index, row in df.iterrows():
-                if (name == row['PLAYER'] and row['R4'] != '-' and not golfer.cut):
+                if (name == row['PLAYER']):
                     # Add R1 Values
-                    r1_score = int(row['R1']) - par
-                    round_1_scores.append(r1_score)
+                    if ((row['R1']) != '-'):
+                        r1_score = int(row['R1']) - par
+                        round_1_scores.append(r1_score)
 
                     # Add R2 Values
-                    r2_score = int(row['R2']) - par
-                    round_2_scores.append(r2_score)
+                    if ((row['R2']) != '-'):
+                        r2_score = int(row['R2']) - par
+                        round_2_scores.append(r2_score)
 
                     # Add R3 Values
-                    r3_score = int(row['R3']) - par
-                    round_3_scores.append(r3_score)
+                    if ((row['R3']) != '-'):
+                        r3_score = int(row['R3']) - par
+                        round_3_scores.append(r3_score)
 
+                elif (name == row['PLAYER'] and row['R4'] != '-' and not golfer.cut):
+                    
                     # Next 4 Lines Adds Earlier Values
                     tot_score = int(row['TOT']) - r1_score - r2_score - r3_score
                     golfer_scores.append(tot_score)
+
                 elif (name == row['PLAYER'] and row['R4'] == '-' and not golfer.cut):
-                    # Add R1 Values
-                    r1_score = int(row['R1']) - par
-                    round_1_scores.append(r1_score)
-
-                    # Add R2 Values
-                    r2_score = int(row['R2']) - par
-                    round_2_scores.append(r2_score)
-
-                    # Add R3 Values
-                    r3_score = int(row['R3']) - par
-                    round_3_scores.append(r3_score)
 
                     golfer_scores.append(0)
                     
