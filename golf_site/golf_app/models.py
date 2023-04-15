@@ -28,6 +28,10 @@ class BlogPost(models.Model):
 
     def __str__(self):
         return self.title
+    
+    def get_date(self):
+        formatted_date = self.timestamp.date()
+        return formatted_date
 
 
 class Golfer(models.Model):
@@ -36,14 +40,10 @@ class Golfer(models.Model):
     player_cost = models.IntegerField(default=0)
     started_round = models.BooleanField(default=False)
     cut = models.BooleanField(default=False)
-    r1_points = models.IntegerField(default=200)
-    r2_points = models.IntegerField(default=200)
-    r3_points = models.IntegerField(default=200)
-    r4_points = models.IntegerField(default=200)
     point = models.IntegerField(default=0)
 
     def __str__(self):
-        return self.name + " - " + str(self.player_cost)
+        return self.name + " - " + inttocommas(self.player_cost)
 
     @classmethod
     def create_update(name, player_cost, cut, point):
@@ -58,16 +58,17 @@ class Team(models.Model):
     # team_golfers = feighn key / many to many https://docs.djangoproject.com/en/4.1/topics/db/examples/many_to_one/
     team_golfers = models.ManyToManyField(Golfer)
     team_points = models.IntegerField(default=0)
-    #creation_time = models.DateTimeField(timezone.now())
     password_used = models.CharField(default="test", max_length=30)
-    r_1_points = models.IntegerField(default=0)
-    r_2_points = models.IntegerField(default=0)
-    r_3_points = models.IntegerField(default=0)
-    r_4_points = models.IntegerField(default=0)
     cut = models.BooleanField(default=False)
 
     def __str__(self):
         return self.team_name
 
 
-
+def inttocommas(number):
+    s = '%d' % number
+    groups = []
+    while s and s[-1].isdigit():
+        groups.append(s[-3:])
+        s = s[:-3]
+    return s + ','.join(reversed(groups))

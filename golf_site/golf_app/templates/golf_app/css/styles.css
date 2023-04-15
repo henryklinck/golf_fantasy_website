@@ -6,7 +6,7 @@
 }
 
 .blog_post_title {
-    color: green;
+    color: #000000;
     font-size: x-large;
 }
 
@@ -21,7 +21,7 @@
 /* Standings */
 
 .standing_caption {
-  color: blue;
+  color: #000000;
 }
 
 .standing_table {
@@ -36,18 +36,4 @@
 table, th, td {
   border: 1px solid black;
   border-collapse: collapse;
-}
-
-/* Build Team Page */
-
-.incorrect_password {
-  color: #000000;
-  top: 50%;
-  left: 50%;  
-}
-
-.invalid_message {
-  color: #000000;
-  top: 50%;
-  left: 50%;
 }

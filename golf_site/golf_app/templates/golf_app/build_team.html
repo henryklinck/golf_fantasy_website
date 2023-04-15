@@ -19,9 +19,10 @@
 
 {% if messages %}
 <div class="messages_container">
-    <ul class="message_list">
+    <ul class="message_list" style="text-align: center">
         {% for message in messages %}
-        <li class="invalid_message">{{ message }}</li>
+        <li class="invalid_message" style="text-align: center;padding-top: 16px;color: white;
+                    font-weight: bold;text-decoration: underline;">*{{ message }}* <br></li>
         {% endfor %}
     </ul>
 </div>

@@ -5,7 +5,7 @@ from django.utils.safestring import mark_safe
 
 class TeamForm(ModelForm):
     team_name = forms.CharField(max_length=30, label=mark_safe('<br /> Team Name:')) 
-    team_owner = forms.CharField(max_length=30, label=mark_safe('<br /> Team Email'))
+    team_owner = forms.CharField(max_length=30, label=mark_safe('<br /> Email'))
     password_used = forms.CharField(max_length=30, label=mark_safe('<br /> Password'))
     #team_cost = forms.IntegerField()
     team_golfers = forms.ModelMultipleChoiceField(

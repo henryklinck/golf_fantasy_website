@@ -13,54 +13,26 @@
 
 {% block content %}
 
+{% if pre_tourn %}
+<h1 style="text-align: center">When The Tournament Starts, Return To This Page To See Your Current Standings</h1>
+{% endif %}
+
 {% block teams %}
 
 <div class="team_wrapper">
-    <table class="standing_table" style="width:90%">
+    <table class="standing_table" style="width:90%;text-align: center">
         <caption class="standing_caption">Standings:</caption>
         {% for team in teams %}
         <tr>
             <th>Team: {{ team.team_name }} </th>
-            <th>Owner: {{ team.team_owner }} </th>
             <th>Total Points: {{ team.team_points }} </th>
-
-
-            {% if r1 %}
-                <th>Round 1 Points: {{ team.r_1_points }} </th>
-            {% endif %}
-            {% if r2 %}
-                <th>Round 1 Points: {{ team.r_1_points }} </th>
-                <th>Round 2 Points: {{ team.r_2_points }} </th>
-            {% endif %}
-            {% if r3 %}
-                <th>Round 1 Points: {{ team.r_1_points }} </th>
-                <th>Round 2 Points: {{ team.r_2_points }} </th>
-                <th>Round 3 Points: {{ team.r_3_points }} </th>
-            {% endif %}
-            {% if r4 %}
-                <th>Round 1 Points: {{ team.r_1_points }} </th>
-                <th>Round 2 Points: {{ team.r_2_points }} </th>
-                <th>Round 3 Points: {{ team.r_3_points }} </th>
-                <th>Round 4 Points: {{ team.r_2_points }} </th>
-            {% endif %}
             <th>
                 {% for golfer in team.team_golfers.all %}
                     <li>{{ golfer.name }} 
                         {% if golfer.cut %} 
                             (CUT) </li> <br>
                         {% else %}
-                            {% if r1 %}
-                                {{ golfer.r1_points }} </li> <br>
-                            {% endif %}
-                            {% if r2 %}
-                                {{ golfer.r2_points }} </li> <br>
-                            {% endif %}
-                            {% if r3 %}
-                                {{ golfer.r3_points }} </li> <br>
-                            {% endif %}
-                            {% if r4 %}
-                                {{ golfer.r4_points }} </li> <br>
-                            {% endif %}
+                           </li> <br>
                         {% endif %}
                 {% endfor %}
             </th>
@@ -72,29 +44,17 @@
 <div class="team_wrapper">
     <table class="standing_table" style="width:90%">
         <caption class="standing_caption">Standings (CUT):</caption>
-        {% for team in teams %}
+        {% for team in cut_teams %}
         <tr>
             <th>Team: {{ team.team_name }} </th>
-            <th>Owner: {{ team.team_owner }} </th>
-            <th>Total Points: {{ team.team_points }} </th>
+            <th>Total Points: CUT </th>
             <th>
                 {% for golfer in team.team_golfers.all %}
                     <li>{{ golfer.name }} 
                         {% if golfer.cut %} 
                             (CUT) </li> <br>
                         {% else %}
-                            {% if r1 %}
-                                {{ golfer.r1_points }} </li> <br>
-                            {% endif %}
-                            {% if r2 %}
-                                {{ golfer.r2_points }} </li> <br>
-                            {% endif %}
-                            {% if r3 %}
-                                {{ golfer.r3_points }} </li> <br>
-                            {% endif %}
-                            {% if r4 %}
-                                {{ golfer.r4_points }} </li> <br>
-                            {% endif %}
+                            </li> <br>
                         {% endif %}
                 {% endfor %}
             </th>

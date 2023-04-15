@@ -3,6 +3,7 @@ from .models import Team, Golfer, SeasonSettings
 from bs4 import BeautifulSoup
 import json
 import pandas as pd
+import numpy as np
 import requests
 import csv
 
@@ -115,6 +116,97 @@ def updates_players(curr_df, round):
             )
 
     return
+
+def team_score(players,leaderboard):
+
+    par = SeasonSettings.objects.first().course_par
+    
+    data = leaderboard.replace('E',0)
+    
+    all_players = {}
+    for player in players:
+        R1,R2,R3,R4 = True, True, True, True
+
+        if list(data[data.PLAYER==player]['R1'])[0] == '-':
+            R1 = 'In Progress'
+            if list(data[data.PLAYER==player]['TOT'])[0] == '-':
+                R1 = False
+            R2,R3,R4 = False, False, False
+        else:
+            R1 = 'Complete'#data[data.PLAYER==player]['R1'][0]
+
+        if R1 == 'Complete':
+            if list(data[data.PLAYER==player]['R2'])[0] == '-':
+                R2 = 'In Progress'
+                if list(data[data.PLAYER==player]['TOT'])[0] == '-':
+                    R2 = False
+                R3,R4 = False, False
+            else:
+                R2 = 'Complete'
+
+        if R2 == 'Complete':
+            if list(data[data.PLAYER==player]['R3'])[0] == '-':
+                R3 = 'In Progress'
+                if list(data[data.PLAYER==player]['TOT'])[0] == '-':
+                    R3 = False
+                R4 = False
+            else:
+                R3 = 'Complete'
+
+        if R3 == 'Complete':
+            if list(data[data.PLAYER==player]['R4'])[0] == '-':
+                R4 = 'In Progress'
+                if list(data[data.PLAYER==player]['TOT'])[0] == '-':
+                    R4 = False
+            else:
+                R4 = 'Complete'
+
+        all_players[player] = [R1,R2,R3,R4]
+    
+    
+    
+    
+    
+    R1s,R2s,R3s,R4s = [],[],[],[]
+
+
+    for player in players:
+
+        #R1 Scores
+        if all_players[player][0] == 'Complete':
+            R1s.append(int(data[data.PLAYER==player]['R1'])-par)
+
+        if all_players[player][0] == 'In Progress':
+            R1s.append(int(data[data.PLAYER==player]['TOT']))
+
+
+
+        #R2 Scores
+        if all_players[player][1] == 'Complete':
+            R2s.append(int(data[data.PLAYER==player]['R2'])-par)
+
+        if all_players[player][1] == 'In Progress':
+            R2s.append(int(data[data.PLAYER==player]['TOT'])-int(data[data.PLAYER==player]['R1'])+par)
+
+
+        #R2 Scores
+        if all_players[player][2] == 'Complete':
+            R3s.append(int(data[data.PLAYER==player]['R2'])-par)
+
+        if all_players[player][2] == 'In Progress':
+            R3s.append(int(data[data.PLAYER==player]['TOT'])-int(data[data.PLAYER==player]['R1'])+par-int(data[data.PLAYER==player]['R2'])+par)
+
+
+            #R2 Scores
+        if all_players[player][3] == 'Complete':
+            R3s.append(int(data[data.PLAYER==player]['R2'])-par)
+
+        if all_players[player][3] == 'In Progress':
+            R3s.append(int(data[data.PLAYER==player]['TOT'])-int(data[data.PLAYER==player]['R1'])+par-int(data[data.PLAYER==player]['R2'])+par-int(data[data.PLAYER==player]['R3'])+par)
+
+    score = np.sum(np.sort(R1s)[0:4])+np.sum(np.sort(R2s)[0:4])+np.sum(np.sort(R3s)[0:4])+np.sum(np.sort(R4s)[0:4])
+    
+    return score
         
 
 def initalize_players(curr_df):
