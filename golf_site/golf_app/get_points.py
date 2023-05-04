@@ -135,7 +135,7 @@ def get_team_score(team_name, df):
                         r2_score = int(row['R2']) - par
                         round_2_scores.append(r2_score)
 
-                elif (name == row['PLAYER'] and row['R3'] != '-' and not golfer.cut):
+                if (name == row['PLAYER'] and row['R3'] != '-' and not golfer.cut):
 
                     # Next 4 Lines Adds Earlier Values
                     tot_score = int(row['TOT']) - r1_score - r2_score
@@ -155,7 +155,6 @@ def get_team_score(team_name, df):
 
         # golfer_scores contains top 4 from round 2
         golfer_scores.sort()
-
         team_score = team_score + sum(golfer_scores[0:4])
 
         return team_score
@@ -188,7 +187,7 @@ def get_team_score(team_name, df):
                         r3_score = int(row['R3']) - par
                         round_3_scores.append(r3_score)
 
-                elif (name == row['PLAYER'] and row['R4'] != '-' and not golfer.cut):
+                if (name == row['PLAYER'] and row['R4'] != '-' and not golfer.cut):
                     
                     # Next 4 Lines Adds Earlier Values
                     tot_score = int(row['TOT']) - r1_score - r2_score - r3_score

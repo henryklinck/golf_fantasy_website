@@ -152,7 +152,7 @@ def confm_team(request):
             for golfer in golfers:
                 temp_team.team_golfers.add(golfer)
             
-            return redirect("build_team")
+            return redirect("standings")
 
     return render(request, 'golf_app/build_team.html')
 
